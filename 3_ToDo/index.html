@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>To-Do Web App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #111;
+      color: white;
+      text-align: center;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #00d9ff;
+      margin-bottom: 20px;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    input[type="text"], input[type="datetime-local"] {
+      width: 200px;
+    }
+
+    button {
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      max-width: 500px;
+      margin: 20px auto;
+    }
+
+    li {
+      background: #222;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 6px;
+      text-align: left;
+      position: relative;
+    }
+
+    li.completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .btn-group {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+    }
+
+    .btn-group button {
+      background: #007bff;
+      margin-left: 5px;
+      font-size: 14px;
+    }
+
+    .btn-group .delete {
+      background: #dc3545;
+    }
+
+    .btn-group .complete {
+      background: #ffc107;
+      color: black;
+    }
+
+    small {
+      display: block;
+      color: #aaa;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📝 To-Do Web App</h1>
+  <input type="text" id="taskInput" placeholder="Enter task" />
+  <input type="datetime-local" id="taskTime" />
+  <button onclick="addTask()">Add Task</button>
+
+  <ul id="taskList"></ul>
+
+  <script>
+    const taskInput = document.getElementById("taskInput");
+    const taskTime = document.getElementById("taskTime");
+    const taskList = document.getElementById("taskList");
+
+    function addTask() {
+      const taskText = taskInput.value.trim();
+      const taskDateTime = taskTime.value;
+
+      if (taskText === "") return alert("Please enter a task!");
+
+      const li = document.createElement("li");
+      const span = document.createElement("span");
+      span.textContent = taskText;
+
+      const timeInfo = document.createElement("small");
+      timeInfo.textContent = taskDateTime ? `📅 ${taskDateTime}` : '';
+
+      const btnGroup = document.createElement("div");
+      btnGroup.className = "btn-group";
+
+      const completeBtn = document.createElement("button");
+      completeBtn.className = "complete";
+      completeBtn.textContent = "✓";
+      completeBtn.onclick = () => li.classList.toggle("completed");
+
+      const editBtn = document.createElement("button");
+      editBtn.textContent = "✏️";
+      editBtn.onclick = () => {
+        const newText = prompt("Edit task:", span.textContent);
+        if (newText !== null) span.textContent = newText;
+      };
+
+      const deleteBtn = document.createElement("button"); 
+      deleteBtn.className = "delete";
+      deleteBtn.textContent = "🗑";
+      deleteBtn.onclick = () => li.remove();
+
+      btnGroup.append(completeBtn, editBtn, deleteBtn);
+      li.append(span, timeInfo, btnGroup);
+      taskList.appendChild(li);
+
+      taskInput.value = "";
+      taskTime.value = "";
+    }
+  </script>
+</body>
+</html>
